@@ -1,0 +1,200 @@
+create login  usersample with password = 'industrialito2020+'
+go
+
+
+create user usersample from login usersample
+go
+
+
+CREATE SCHEMA osinerg;
+GO
+
+
+
+
+GRANT CREATE ANY DATABASE to usersample
+
+
+
+--TABLA EMPRESA
+create table osinerg.empresa
+( 
+idempresa int IDENTITY NOT NULL,
+codigo char(10),
+tipo nvarchar(30)  NOT NULL,
+nombre1 nvarchar(50)  NOT NULL,
+nombre2 nvarchar(50)  NOT NULL,
+direccion nvarchar(100) NOT NULL,
+ubicacion nvarchar(30)  NOT NULL,
+telefono  nchar(20) DEFAULT '--',
+fax  nchar(20) DEFAULT '--',
+weburl  nchar(20) DEFAULT '--',
+correo  nchar(20) DEFAULT '--',
+gerente  nchar(20) DEFAULT '--',
+coordinador  nchar(20) DEFAULT '--',
+estado nchar(3), 
+PRIMARY KEY(idempresa)
+);
+go
+
+
+--TABLA ZONA
+create table osinerg.zona
+( idzona int IDENTITY NOT NULL,
+  codigo char(10) NOT NULL,
+  nombre char(10),
+  tipo char(10),
+  sector  char(10),
+  max_demanda real,
+  estado nchar(2), 
+  PRIMARY KEY(idzona),
+  idempresa int FOREIGN KEY REFERENCES osinerg.empresa(idempresa) ON DELETE CASCADE
+);
+go
+
+
+
+
+
+--TABLA SUCURSAL
+create table osinerg.sucursal 
+( 
+ idsucursal int IDENTITY NOT NULL, 
+ codigo  varchar(10) NOT NULL,
+ estado  nchar(3),  
+ PRIMARY KEY(idsucursal),
+ idzona  int FOREIGN KEY REFERENCES osinerg.zona(idzona),
+)
+
+
+--TABLA CLIENTES LIBRES
+create table osinerg.cliente_libre
+(
+idclientelibre int IDENTITY NOT NULL, 
+nombre  NVARCHAR(30) not null,
+apellido NVARCHAR(30) not null,
+direccion nvarchar(100) NOT NULL,
+localidad NVARCHAR(50) not null,
+ubicacion NVARCHAR(50) not null,
+estado  nchar(3),   
+idzona  int FOREIGN KEY REFERENCES osinerg.empresa(idempresa),
+idempresa int FOREIGN KEY REFERENCES osinerg.empresa(idempresa),
+PRIMARY KEY(idclientelibre)
+)
+
+
+--TABLA CRONOGRAMAS TENSIÓN
+create table osinerg.crono_tension
+(
+idcronotension int IDENTITY NOT NULL, 
+ano nchar(20) not null,
+mes  nchar(20) not null,
+tipo_punto NVARCHAR(30) not null,
+nro_medicion int,
+nro_suministro int,
+estado  nchar(3),   
+idzona  int FOREIGN KEY REFERENCES osinerg.zona(idzona),
+idempresa int FOREIGN KEY REFERENCES osinerg.empresa(idempresa),
+PRIMARY KEY(idcronotension)
+)
+
+
+--TABLA CRONOGRAMAS PRECISION
+create table osinerg.crono_precision
+(
+idcronoprecision int IDENTITY NOT NULL, 
+ano nchar(20) not null,
+mes  nchar(20) not null,
+tipo_medicion NVARCHAR(30) not null,
+tipo_punto NVARCHAR(30) not null,
+nro_medicion int,
+nro_suministro int,
+estado  nchar(3),   
+idzona  int FOREIGN KEY REFERENCES osinerg.zona(idzona),
+idempresa int FOREIGN KEY REFERENCES osinerg.empresa(idempresa),
+PRIMARY KEY(idcronoprecision)
+)
+
+
+
+--TABLA CRONOGRAMAS PERTURBACIÓN AT
+create table osinerg.crono_perturbacion_at
+(
+idperturbacionat int IDENTITY NOT NULL, 
+ano nchar(20) not null,
+mes  nchar(20) not null,
+tipo_punto NVARCHAR(30) not null,
+tipo_medicion NVARCHAR(30) not null,
+nro_medicion int,
+nro_suministro int,
+estado  nchar(3),   
+idzona  int FOREIGN KEY REFERENCES osinerg.zona(idzona),
+idempresa int FOREIGN KEY REFERENCES osinerg.empresa(idempresa),
+PRIMARY KEY(idperturbacionat)
+)
+
+
+
+
+--TABLA ALUMBRADO PUBLICO
+create table alumbrado
+(
+
+idcodalumbrado int 
+idempresa int,
+idzona int,
+
+primary key(idcodalumbrado)
+)
+
+
+create table suministro
+(
+
+)
+
+--TABLA SET
+create table sset 
+(
+
+)
+
+
+--TABLA SED
+create table ssed 
+(
+idsed int,
+idempresa int,
+idzona int,
+codigo ,
+estado,
+
+primary key(idsed)
+(
+)
+
+
+
+
+
+
+
+
+
+--BASE DE DATOS FACILITO 
+
+
+--TABLA CLIENTES FACILITO 
+create table facilito.cliente
+(
+idcliente int IDENTITY NOT NULL, 
+nombre  NVARCHAR(30) not null,
+apellido1 NVARCHAR(30) not null,
+apellido2 NVARCHAR(30) not null,
+direccion nvarchar(100) NOT NULL,
+DNI NVARCHAR(11) not null,
+estado  nchar(3),   
+correo nvarchar(100) NULL,
+telefono nvarchar(100) NULL,
+PRIMARY KEY(idcliente)
+)
